@@ -3,6 +3,8 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request; 
 use App\Http\Controllers\Controller; 
 use App\User; 
+use App\Client;
+use App\ClientVisitHistory;
 use Illuminate\Support\Facades\Auth; 
 use Validator;
 class UserController extends Controller 
@@ -17,8 +19,11 @@ public $successStatus = 200;
         header("Access-Control-Allow-Origin: *");
         if(Auth::attempt(['login' => request('login'), 'password' => request('password')])){ 
             $user = Auth::user(); 
+            $infoclient = $user->first();
+            $inforesto = Client::find($infoclient->id_client)->first();
+            $clientvisit = ClientVisitHistory::fidelityCardClient();
             $success['token'] =  $user->createToken('MyApp')-> accessToken; 
-            return response()->json(['success' => $success], $this-> successStatus); 
+            return response()->json(['success' => $success,"infoClient"=>$infoclient,"infoResto"=>$inforesto,"clientvisit"=>$clientvisit], $this-> successStatus); 
         } 
         else{ 
             return response()->json(['error'=>'Unauthorised'], 401); 
