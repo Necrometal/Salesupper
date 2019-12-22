@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mes Restaurants</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor="let resto of infoResto">
+    <ion-item>
+      <ion-label>{{resto.name}}</ion-label>
+      <ion-icon (click)="viewhistory(infoClient.id_client)" ios="ios-eye-outline" md="md-eye" slot="end"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>
