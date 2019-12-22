@@ -21,9 +21,9 @@ public $successStatus = 200;
             $user = Auth::user(); 
             $infoclient = $user->first();
             $inforesto = Client::find($infoclient->id_client)->first();
-            $clientvisit = ClientVisitHistory::fidelityCardClient();
-            $success['token'] =  $user->createToken('MyApp')-> accessToken; 
-            return response()->json(['success' => $success,"infoClient"=>$infoclient,"infoResto"=>$inforesto,"clientvisit"=>$clientvisit], $this-> successStatus); 
+            $success['token'] =  $user->createToken('MyApp')->accessToken; 
+            $clientVisitHistories = ClientVisitHistory::where('id_fcard_client',$infoclient->id_client)->get();
+            return response()->json(['token' => $success['token'],"infoClient"=>$infoclient,"infoResto"=>$inforesto,"clientvisit"=>$clientVisitHistories], $this-> successStatus); 
         } 
         else{ 
             return response()->json(['error'=>'Unauthorised'], 401); 
@@ -62,4 +62,35 @@ return response()->json(['success'=>$success], $this-> successStatus);
         $user = Auth::user(); 
         return response()->json(['success' => $user], $this-> successStatus); 
     } 
+
+    public function get_history($id){
+        $fidelityCard = FidelityCardClient::find($id);
+        //Client visit histories
+        $clientVisitHistories = ClientVisitHistory::where('id_fcard_client',$id)->get();
+        $products = FinalProduct::where('id_client',$this->idCurrentClient)->orderBy('title')->get();
+        // $final_product = DB::table('final_products')
+        //     ->join('class_products', 'class_products.id', '=', 'final_products.id_classProduct')
+        //     ->select(DB::raw("final_products.*, class_products.name"))
+        //     ->where('final_products.id_client',$this->idCurrentClient)
+        //     ->orderBy('final_products.title')
+        //     ->get();
+        $gratuite = DB::table('gratuite')
+                ->select('gratuite.*')
+                ->where('gratuite.id_fcard_client', $fidelityCard->id)
+                ->where('gratuite.actif', 0)
+                ->get();
+        if(count($gratuite) > 0){
+            $fidelityCard->gratuiteCount = count($gratuite);
+        }else{
+            $fidelityCard->gratuiteCount = 0;
+        }
+        $index = 0;
+        $data = [
+            'fidelityCard'=>$fidelityCard,
+            'clientVisitHistories'=>$clientVisitHistories,
+            'products'=>$products,
+            'index'=>$index,
+            // 'final_product' => $final_product
+        ];
+    }
 }
