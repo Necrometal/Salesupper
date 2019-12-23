@@ -1,0 +1,23 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Se connecter</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+    <ion-list lines="full" class="ion-no-margin ion-no-padding">
+      <ion-item>
+        <ion-label position="stacked">Téléphone <ion-text color="primary">*</ion-text></ion-label>
+        <ion-input [(ngModel)] ="formtype.firstname" required type="number"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Mot de passe <ion-text color="primary">*</ion-text></ion-label>
+        <ion-input [(ngModel)] ="formtype.lastname" required type="password" ></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+      <ion-button (click) = register(test) expand="block" type="submit" class="ion-no-margin">Connexion</ion-button>
+    </div>
+</ion-content>
