@@ -15,6 +15,14 @@ const routes: Routes = [
     path: 'historyclient',
     loadChildren: () => import('./historyclient/historyclient.module').then( m => m.HistoryclientPageModule)
   },
+  {
+    path: 'menu',
+    loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
+  },
+  {
+    path: 'detailfacture/:id',
+    loadChildren: () => import('./detailfacture/detailfacture.module').then( m => m.DetailfacturePageModule)
+  },
 ];
 
 @NgModule({

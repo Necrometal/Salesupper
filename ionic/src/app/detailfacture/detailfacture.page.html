@@ -8,8 +8,9 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
-  <ion-menu color="warning" style="position: fixed;" side="start" menuId="firstch">
+  <ion-menu color="warning" style="position: fixed;" side="start" menuId="firstdetfact">
     <ion-header color="warning">
       <ion-toolbar color="warning">
         <ion-title style="display: flex;"><span style="position: absolute;bottom: -1px;"> Menu </span><ion-button color="warning" style="position: absolute;bottom: -13px;right: 10px;height: 30px;color: white;" (click)="close_menu()"><ion-icon style="height: 20px;" ios="ios-close-circle" md="md-close-circle"></ion-icon></ion-button></ion-title>
@@ -24,20 +25,32 @@
     </ion-content>
   </ion-menu>
   <ion-router-outlet main></ion-router-outlet>
-  <!-- <ion-list *ngFor="let resto of infoResto">
-    <ion-item>
-      <ion-label>{{resto.name}}</ion-label>
-      <ion-icon (click)="viewhistory(infoClient.id_client)" ios="ios-eye-outline" md="md-eye" slot="end"></ion-icon>
-    </ion-item>
-  </ion-list> -->
-  <ion-list style="margin-top: 25px;" *ngFor="let resto of infoResto">
-  <ion-item (click)="viewhistory(infoClient.id_client)">
-    <ion-avatar slot="start">
-      <img src="../../assets/img/logo.png">
-    </ion-avatar>
-    <ion-label>
-      <h2>{{resto.name}} <span style="font-size: 25px;float: right;">{{resto.nb_passage}}</span></h2>
-    </ion-label>
-  </ion-item>
-</ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6">
+        <span>Produit</span>
+      </ion-col>
+      <ion-col size="3">
+          P.Unitaire
+      </ion-col>
+      <ion-col size="3">
+        Quantité
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngFor = "let detail of detail_to_show">
+    <ion-row>
+      <ion-col size="6">
+        <span>{{detail.title}}</span>
+      </ion-col>
+      <ion-col size="3">
+        <span>{{detail.sales_price}}</span>
+      </ion-col>
+      <ion-col size="3">
+        <span>{{detail.quantity}}</span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>
