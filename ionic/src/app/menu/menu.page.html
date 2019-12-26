@@ -1,0 +1,55 @@
+<ion-header color="warning">
+  <ion-toolbar color="warning">
+    <ion-title color="warning">
+      <div style="display: flex;">
+      <ion-button color="warning" style="color: white;" (click)="openFirst()"> <ion-icon style="height:20px" ios="ios-menu" md="md-menu"></ion-icon></ion-button>
+      <img src="../../assets/img/logo8PAGE.png">
+    </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-menu color="warning" style="position: fixed;" side="start" menuId="first">
+    <ion-header color="warning">
+      <ion-toolbar color="warning">
+        <ion-title style="display: flex;"><span style="position: absolute;bottom: -1px;"> Menu </span><ion-button color="warning" style="position: absolute;bottom: -13px;right: 10px;height: 30px;color: white;" (click)="close_menu()"><ion-icon style="height: 20px;" ios="ios-close-circle" md="md-close-circle"></ion-icon></ion-button></ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content color="warning">
+      <ion-list no-padding color="warning">
+        <ion-item (click)="moncompte()" style="font-size: 16px;" color="warning">Mon compte</ion-item>
+        <ion-item (click)="mesresto()" style="font-size: 16px;" color="warning">Mes Restaurant</ion-item>
+        <ion-item (click)="logout()" style="font-size: 16px;" color="warning">Se déconnecter</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet main></ion-router-outlet>
+  <div style="margin-top: 10px;">
+    <ion-input placeholder ="Nom du compte *" style="border-bottom: solid 1px;" type="text" value="{{infoClient.name}}"></ion-input>
+  </div>
+  <div style="margin-top: 10px;">
+    <ion-input placeholder ="Numéro" style="border-bottom: solid 1px;" type="text" value="{{infoClient.login}}"></ion-input>
+  </div>
+  <div style="margin-top: 10px;">
+    <ion-input placeholder ="Démarcheur" style="border-bottom: solid 1px;" type="text" value=""></ion-input>
+  </div>
+
+  <div style="margin-top: 30px;font-weight: bold;">Changer mon mots de passe</div>
+
+  <div style="margin-top: 10px;">
+    <div style="font-size: 18px;">Ancien mots de passe</div>
+    <ion-input placeholder ="Nom du compte *" style="border-bottom: solid 1px;" type="text" value=""></ion-input>
+  </div>
+  <div style="margin-top: 10px;">
+    <div style="font-size: 18px;">Nouveau mots de passe</div>
+    <ion-input placeholder ="Numéro" style="border-bottom: solid 1px;" type="text" value=""></ion-input>
+  </div>
+  <div style="margin-top: 10px;">
+    <div style="font-size: 18px;">Confirmer mots de passe</div>
+    <ion-input placeholder ="Démarcheur" style="border-bottom: solid 1px;" type="text" value=""></ion-input>
+  </div>
+  <div style="margin-top: 10px;">
+    <button style="float: right; background-color:#32396b;height: 40px;color: white;font-size: 20px;" >Confirmer</button>
+  </div>
+</ion-content>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController,LoadingController,AlertController  } from '@ionic/angular';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {DataService} from '../service/data.service';
@@ -19,12 +19,17 @@ export class HomePage {
       'Content-Type': 'application/json',
     })
   }
-  constructor(public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService) {}
+  constructor(public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService,public load : LoadingController,private alertCtrl: AlertController) {}
 
   register(){
     
   }
-  login(){
+  async login(){
+    const loading = await this.load.create({
+      message: 'chargement. . .',
+      duration: 5000
+    });
+    await loading.present();
     let postData =  this.formtype;
     this.http.post("http://mobile.api.salesupper.com/api/login", postData, this.httpOptions)
     .subscribe(data => {
@@ -33,10 +38,17 @@ export class HomePage {
         this.dataservice.setclientHistory(data.clientHistory);
         this.dataservice.setinfoClient(data.infoClient);
         this.dataservice.setinfoResto(data.infoResto);
-        this.route.navigate(['/choiceresto']);
+        loading.dismiss();
+        this.route.navigate(['/menu']);
         console.log(data)
       }
-     }, error => {
+     }, async error => {
+      loading.dismiss();
+     const alert = await this.alertCtrl.create({
+         message: 'Login ou mot de passe invalide ou verifier votre connection internet',
+         buttons: ['OK']
+      });
+      await alert.present();
       console.log(error);
     });
   }

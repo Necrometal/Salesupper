@@ -4,20 +4,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
-    <ion-list lines="full" class="ion-no-margin ion-no-padding">
-      <ion-item>
-        <ion-label position="stacked">Login <ion-text color="primary">*</ion-text></ion-label>
-        <ion-input [(ngModel)] ="formtype.login" required type="text"></ion-input>
-      </ion-item>
+<ion-content class="bg-yellow" fullscreen>
+  <div class="text-center w-100">
+      <img style="width: 50%;" src="../../assets/img/logo.png">
+  </div>
+    <div class="text-center w-100">
+      <h1>SALES UPPER</h1>
+    </div>
+    
+      <div style="background-color: white;border-radius: 5px;width: 80%;margin: auto;">
+        <ion-input placeholder="Login" [(ngModel)] ="formtype.login" required type="text"></ion-input>
+      </div>
 
-      <ion-item>
-        <ion-label position="stacked">Mot de passe <ion-text color="primary">*</ion-text></ion-label>
-        <ion-input [(ngModel)] ="formtype.password" required type="password" ></ion-input>
-      </ion-item>
-    </ion-list>
+      <div style="background-color: white;border-radius: 5px;width: 80%;margin: auto;margin-top: 20px;">
+        <ion-input placeholder="Mot de passe" [(ngModel)] ="formtype.password" required type="password" ></ion-input>
+      </div>
+    
 
-    <div class="ion-padding">
-      <ion-button (click) = login() expand="block" type="submit" class="ion-no-margin">Connexion</ion-button>
+    <div style="margin: auto;text-align: center;margin-top: 20px;">
+      <button (click) = login() style="width: 80%;background-color:#32396b;height: 50px;color: white;font-size: 25px;" type="submit">Se connecter</button>
     </div>
 </ion-content>

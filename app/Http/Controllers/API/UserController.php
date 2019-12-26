@@ -9,6 +9,7 @@ use App\Client;
 use App\FinalProduct;
 use App\ClientVisitHistory;
 use App\FidelityCardClient;
+use App\ClientVisitHistoryDtl;
 use App\Http\Controllers\Controller; 
 class UserController extends Controller 
 {
@@ -23,10 +24,12 @@ public $successStatus = 200;
                             ->first();
             $user = Auth::user();
             $loginclient = $infoclient->login;
-            $inforesto = User::select("users.id_client","clients.name")
+            $idclient = $infoclient->id;
+            $inforesto = User::select("users.id_client","clients.name","fidelity_card_clients.nb_passage")
                     ->join("clients","clients.id","=","users.id_client")
-                    ->groupBy("users.id_client","users.id","clients.name")
-                    ->where("users.login","=",$loginclient)
+                    ->join("fidelity_card_clients","fidelity_card_clients.user_id","=","users.id")
+                    ->groupBy("users.id_client","users.id","clients.name","fidelity_card_clients.nb_passage")
+                    ->where("users.id","=",$idclient)
                     ->get();
             $success['token'] =  $user->createToken('MyApp')->accessToken; 
             $clientVisitHistories = ClientVisitHistory::where('id_fcard_client',$infoclient->id_client)->get();
@@ -58,8 +61,9 @@ return response()->json(['success'=>$success], $this-> successStatus);
     public function get_history(Request $request){
         $id_resto = $request->get('id_resto');
         $id_client = $request->get('id_client');
-        $fidelityCard = FidelityCardClient::where("user_id",$id_client)->get();
-        $clientVisitHistories = ClientVisitHistory::where('id_fcard_client',$id_client)->get();
+        $inforestone = Client::find($id_resto);
+        $fidelityCard = FidelityCardClient::where("user_id",$id_client)->first();
+        $clientVisitHistories = ClientVisitHistory::where('id_fcard_client',$fidelityCard->id)->get();
         $products = FinalProduct::where('id_client',$id_resto)->orderBy('title')->get();
         $gratuite = DB::table('gratuite')
                 ->select('gratuite.*')
@@ -75,8 +79,20 @@ return response()->json(['success'=>$success], $this-> successStatus);
             'fidelityCard'=>$fidelityCard,
             'clientVisitHistories'=>$clientVisitHistories,
             'products'=>$products,
+            "inforestone"=>$inforestone,
         ];
         return response()->json($data, $this->successStatus); 
     }
-
+    public function get_history_details(Request $request){
+        $idhistorique = $request->get("id_histo");
+        $allhisto = DB::table('client_visit_history_dtls')
+                                        ->select("client_visit_history_dtls.*","final_products.*")
+                                        ->join("final_products","final_products.id","=","client_visit_history_dtls.id_finalProduct")
+                                        ->where("client_visit_history_dtls.id_cvisit_history",$idhistorique)
+                                        ->get();
+        $data = [
+            "historical" => $allhisto,
+        ];
+        return response()->json($data, $this->successStatus);
+    }
 }
