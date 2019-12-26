@@ -10,7 +10,6 @@ import { from } from 'rxjs';
   styleUrls: ['./choiceresto.page.scss'],
 })
 export class ChoicerestoPage implements OnInit {
-
   token:"";
   infoClient:any;
   infoResto:any;
@@ -21,7 +20,7 @@ export class ChoicerestoPage implements OnInit {
     this.infoResto=this.dataservice.getinfoResto();
     this.clientHistory=this.dataservice.getclientHistory();
     console.log(this.infoClient);
-   }
+  }
 
   ngOnInit() {
   }
@@ -56,4 +55,5 @@ export class ChoicerestoPage implements OnInit {
   logout(){
 
   }
+
 }

@@ -1,29 +1,33 @@
+
+
+
 <ion-header color="warning">
   <ion-toolbar color="warning">
-    <ion-title color="warning">
-      <div style="display: flex;">
-      <ion-button color="warning" style="color: white;" (click)="openFirst()"> <ion-icon style="height:20px" ios="ios-menu" md="md-menu"></ion-icon></ion-button>
+      <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title>
       <img src="../../assets/img/logo8PAGE.png">
-    </div>
     </ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
-  <ion-menu color="warning" style="position: fixed;" side="start" menuId="firstch">
+  <!-- <ion-menu contentId="my-content" color="warning" style="position: fixed;" side="start" menuId="firstch">
     <ion-header color="warning">
       <ion-toolbar color="warning">
         <ion-title style="display: flex;"><span style="position: absolute;bottom: -1px;"> Menu </span><ion-button color="warning" style="position: absolute;bottom: -13px;right: 10px;height: 30px;color: white;" (click)="close_menu()"><ion-icon style="height: 20px;" ios="ios-close-circle" md="md-close-circle"></ion-icon></ion-button></ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content color="warning">
-      <ion-list no-padding color="warning">
+      <ion-list class="ion-no-padding" color="warning">
         <ion-item (click)="moncompte()" style="font-size: 16px;" color="warning">Mon compte</ion-item>
         <ion-item (click)="mesresto()" style="font-size: 16px;" color="warning">Mes Restaurant</ion-item>
         <ion-item (click)="logout()" style="font-size: 16px;" color="warning">Se déconnecter</ion-item>
       </ion-list>
     </ion-content>
   </ion-menu>
-  <ion-router-outlet main></ion-router-outlet>
+  <ion-router-outlet id="my-content"></ion-router-outlet> -->
   <!-- <ion-list *ngFor="let resto of infoResto">
     <ion-item>
       <ion-label>{{resto.name}}</ion-label>
@@ -31,13 +35,13 @@
     </ion-item>
   </ion-list> -->
   <ion-list style="margin-top: 25px;" *ngFor="let resto of infoResto">
-  <ion-item (click)="viewhistory(infoClient.id_client)">
-    <ion-avatar slot="start">
-      <img src="../../assets/img/logo.png">
-    </ion-avatar>
-    <ion-label>
-      <h2>{{resto.name}} <span style="font-size: 25px;float: right;">{{resto.nb_passage}}</span></h2>
-    </ion-label>
-  </ion-item>
-</ion-list>
+    <ion-item (click)="viewhistory(infoClient.id_client)">
+      <ion-avatar slot="start">
+        <img src="../../assets/img/logo.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{resto.name}} <span style="font-size: 25px;float: right;">{{resto.nb_passage}}</span></h2>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
