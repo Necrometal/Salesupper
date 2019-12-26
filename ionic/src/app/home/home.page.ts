@@ -10,34 +10,36 @@ import { from } from 'rxjs';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage { 
-  formtype = {
-    login:'',
-    password:"",
-  }
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    })
-  }
-  constructor(public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService) {}
+    formtype = {
+        login:'',
+        password:"",
+    }
+    httpOptions = {
+        headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+        })
+    }
+    constructor(
+        public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService
+    ) {}
 
-  register(){
-    
-  }
-  login(){
-    let postData =  this.formtype;
-    this.http.post("http://mobile.api.salesupper.com/api/login", postData, this.httpOptions)
-    .subscribe(data => {
-      if(data.token){
-        this.dataservice.setToken(data.token);
-        this.dataservice.setclientHistory(data.clientHistory);
-        this.dataservice.setinfoClient(data.infoClient);
-        this.dataservice.setinfoResto(data.infoResto);
-        this.route.navigate(['/choiceresto']);
-        console.log(data)
-      }
-     }, error => {
-      console.log(error);
-    });
-  }
+    register(){
+        
+    }
+    login(){
+        let postData =  this.formtype;
+        this.http.post("http://mobile.api.salesupper.com/api/login", postData, this.httpOptions)
+        .subscribe(data => {
+            if(data.token){
+                this.dataservice.setToken(data.token);
+                this.dataservice.setclientHistory(data.clientHistory);
+                this.dataservice.setinfoClient(data.infoClient);
+                this.dataservice.setinfoResto(data.infoResto);
+                this.route.navigate(['/choiceresto']);
+                console.log(data)
+            }
+        }, error => {
+            console.log(error);
+        });
+    }
 }
