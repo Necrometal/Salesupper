@@ -24,20 +24,15 @@ public $successStatus = 200;
                             ->first();
             $user = Auth::user();
             $loginclient = $infoclient->login;
-            $id_login = $infoclient->id;
+            $idclient = $infoclient->id;
             $inforesto = User::select("users.id_client","clients.name","fidelity_card_clients.nb_passage")
                     ->join("clients","clients.id","=","users.id_client")
                     ->join("fidelity_card_clients","fidelity_card_clients.user_id","=","users.id")
                     ->groupBy("users.id_client","users.id","clients.name","fidelity_card_clients.nb_passage")
-                    ->where("users.id","=",$id_login)
+                    ->where("users.id","=",$idclient)
                     ->get();
             $success['token'] =  $user->createToken('MyApp')->accessToken; 
-            $fcard = DB::table('fidelity_card_clients')
-                ->select('fidelity_card_clients.id')
-                ->where('fidelity_card_clients.mobile', $loginclient)
-                ->first();
-            $clientVisitHistories = ClientVisitHistory::where('id_fcard_client',$fcard->id)->get();
-            $infoclient->id_fcard = $fcard->id;
+            $clientVisitHistories = ClientVisitHistory::where('id_fcard_client',$infoclient->id_client)->get();
             return response()->json(['token' => $success['token'],"infoClient"=>$infoclient,"infoResto"=>$inforesto,"clientHistory"=>$clientVisitHistories], $this->successStatus); 
         } 
         else{ 

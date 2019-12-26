@@ -15,7 +15,6 @@ class UserController extends Controller
 public $successStatus = 200;
 
     public function login(){ 
-        header("Access-Control-Allow-Origin: *");
         if(Auth::attempt(['login' => request('login'), 'password' => request('password')])){ 
             
             $infoclient = DB::table('users')
