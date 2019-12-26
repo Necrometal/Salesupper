@@ -1,5 +1,5 @@
 import { Component, OnInit,Input } from '@angular/core';
-import { ActionSheetController,NavController } from '@ionic/angular';
+import { ActionSheetController,NavController,MenuController,LoadingController } from '@ionic/angular';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Router,ActivatedRoute} from '@angular/router';
 import {DataService} from '../service/data.service';
@@ -18,7 +18,7 @@ export class DetailfacturePage implements OnInit {
   visithistories:any;
   id_histo:any;
   detail_to_show:any;
-  constructor(public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService,private getid:ActivatedRoute) { 
+  constructor(public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService,private getid:ActivatedRoute,public menu:MenuController,public load : LoadingController) { 
     this.token=this.dataservice.getToken();
     this.infoClient=this.dataservice.getinfoClient();
     this.infoResto=this.dataservice.getinfoResto();
@@ -32,7 +32,12 @@ export class DetailfacturePage implements OnInit {
    console.log("dfdf")
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const loading = await this.load.create({
+      message: 'chargement. . .',
+      duration: 5000
+    });
+    await loading.present();
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -46,12 +51,20 @@ export class DetailfacturePage implements OnInit {
     this.http.post("http://mobile.api.salesupper.com/api/get_history_details", postData,httpOptions)
     .subscribe(data => {
       if(data){
+        loading.dismiss();
         this.detail_to_show =data.historical;
         console.log(data);
       }
      }, error => {
+      loading.dismiss();
       console.log(error);
     });
   }
-
+  openFirst() {
+    this.menu.enable(true, 'firstdetfact');
+    this.menu.open('firstdetfact');
+  }
+  close_menu(){
+    this.menu.close();
+  }
 }

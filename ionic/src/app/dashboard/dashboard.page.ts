@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController,NavController,MenuController } from '@ionic/angular';
+import { ActionSheetController,NavController,MenuController,LoadingController } from '@ionic/angular';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Router,ActivatedRoute} from '@angular/router';
 import {DataService} from '../service/data.service';
@@ -24,7 +24,7 @@ export class DashboardPage implements OnInit {
   restoName:any;
   nb_passage:any;
   visithistories:any;
-  constructor(public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService,private getid:ActivatedRoute,public menu: MenuController) {
+  constructor(public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService,private getid:ActivatedRoute,public menu: MenuController,public load : LoadingController) {
     this.token=this.dataservice.getToken();
     this.infoClient=this.dataservice.getinfoClient();
     this.infoResto=this.dataservice.getinfoResto();
@@ -39,7 +39,12 @@ export class DashboardPage implements OnInit {
    console.log(this.infoResto);
    console.log("dfdf")
    }
-  ngOnInit() {
+  async ngOnInit() {
+    const loading = await this.load.create({
+      message: 'chargement. . .',
+      duration: 5000
+    });
+    await loading.present();
    let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -55,8 +60,10 @@ export class DashboardPage implements OnInit {
         this.restoName = this.infovisit.inforestone.name;
         this.nb_passage = this.infovisit.fidelityCard.nb_passage;
         this.visithistories = this.infovisit.clientVisitHistories;
+        loading.dismiss();
       }
      }, error => {
+      loading.dismiss();
       console.log(error);
     });
   }
@@ -69,7 +76,7 @@ export class DashboardPage implements OnInit {
   }
   openFirst() {
     this.menu.enable(true, 'firstdash');
-    this.menu.open('first');
+    this.menu.open('firstdash');
   }
   close_menu(){
     this.menu.close();
