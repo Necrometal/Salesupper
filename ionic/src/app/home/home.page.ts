@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { ActionSheetController,LoadingController,AlertController  } from '@ionic/angular';
-import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import {DataService} from '../service/data.service';
-import { from } from 'rxjs';
+import { HTTP } from '@ionic-native/http/ngx';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -14,12 +13,12 @@ export class HomePage {
     login:'',
     password:"",
   }
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    })
+
+  headers: {
+    'Content-Type': 'application/json'
   }
-  constructor(public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService,public load : LoadingController,private alertCtrl: AlertController) {}
+  data:any
+  constructor(public actionSheetController: ActionSheetController,public http: HTTP,private route :Router,public dataservice:DataService,public load : LoadingController,private alertCtrl: AlertController) {}
 
   register(){
     
@@ -31,25 +30,27 @@ export class HomePage {
     });
     await loading.present();
     let postData =  this.formtype;
-    this.http.post("http://mobile.api.salesupper.com/api/login", postData, this.httpOptions)
-    .subscribe(data => {
-      if(data.token){
-        this.dataservice.setToken(data.token);
-        this.dataservice.setclientHistory(data.clientHistory);
-        this.dataservice.setinfoClient(data.infoClient);
-        this.dataservice.setinfoResto(data.infoResto);
+    this.http.post("http://mobile.api.salesupper.com/api/login", postData,this.headers)
+    .then(datas => {
+      if(datas){
+        this.data = datas;
+        console.log(this.data.data);
+        this.data = JSON.parse(this.data.data);
+        this.dataservice.setToken(this.data.token);
+        this.dataservice.setclientHistory(this.data.clientHistory);
+        this.dataservice.setinfoClient(this.data.infoClient);
+        this.dataservice.setinfoResto(this.data.infoResto);
         loading.dismiss();
         this.route.navigate(['/menu']);
-        console.log(data)
       }
-     }, async error => {
+     }).catch(async err => {
+      console.log(err);
       loading.dismiss();
      const alert = await this.alertCtrl.create({
          message: 'Login ou mot de passe invalide ou verifier votre connection internet',
          buttons: ['OK']
-      });
-      await alert.present();
-      console.log(error);
-    });
-  }
+   });
+   alert.present();
+  });
+}
 }

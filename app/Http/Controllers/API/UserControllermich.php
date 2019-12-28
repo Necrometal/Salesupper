@@ -9,6 +9,7 @@ use App\Client;
 use App\FinalProduct;
 use App\ClientVisitHistory;
 use App\FidelityCardClient;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller; 
 class UserController extends Controller 
 {
@@ -88,5 +89,20 @@ public $successStatus = 200;
         ];
         return response()->json($data, $this->successStatus); 
     }
-
+    public function change_mdp(Request $request){
+        $pass = $request->get('actual_pass');
+        $new = $request->get('new_pass');
+        $iduser = $request->get('user');
+        $infouser = User::where('id',$iduser)->first();
+        if (Hash::check($pass, $infouser->password)) {
+           $new_password = Hash::make($new);
+           $data = array("password" =>$new_password );
+           DB::table('users')
+           ->where('id', $iduser)
+           ->update($data);
+           return response()->json(['success'=>'1'], $this->successStatus); 
+        }else{
+            return response()->json(['success'=>'0'], $this->successStatus); 
+        }
+    }
 }

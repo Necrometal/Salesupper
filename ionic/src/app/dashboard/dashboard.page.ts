@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController,NavController,MenuController,LoadingController } from '@ionic/angular';
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import {MenuController,LoadingController } from '@ionic/angular';
+import { HTTP } from '@ionic-native/http/ngx';
 import { Router,ActivatedRoute} from '@angular/router';
 import {DataService} from '../service/data.service';
-import { from } from 'rxjs';
-import { DetailfacturePage } from '../detailfacture/detailfacture.page';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
@@ -24,7 +22,11 @@ export class DashboardPage implements OnInit {
   restoName:any;
   nb_passage:any;
   visithistories:any;
-  constructor(public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService,private getid:ActivatedRoute,public menu: MenuController,public load : LoadingController) {
+  headers: {
+    'Content-Type': 'application/json'
+  }
+  data:any;
+  constructor(public http: HTTP,private route :Router,public dataservice:DataService,private getid:ActivatedRoute,public menu: MenuController,public load : LoadingController) {
     this.token=this.dataservice.getToken();
     this.infoClient=this.dataservice.getinfoClient();
     this.infoResto=this.dataservice.getinfoResto();
@@ -45,28 +47,24 @@ export class DashboardPage implements OnInit {
       duration: 5000
     });
     await loading.present();
-   let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+this.token,
-      })
-    }
     let postData =  this.formtype;
-    this.http.post("http://mobile.api.salesupper.com/api/get_history_client", postData,httpOptions)
-    .subscribe(data => {
-      if(data){
-        console.log(data);
-        this.infovisit = data;
+    this.http.post("http://mobile.api.salesupper.com/api/get_history_client", postData,this.headers)
+    .then(datas => {
+      if(datas){
+        this.data = datas;
+        console.log(this.data);
+        this.data = JSON.parse(this.data.data);
+        this.infovisit = this.data;
         this.restoName = this.infovisit.inforestone.name;
         this.nb_passage = this.infovisit.fidelityCard.nb_passage;
         this.visithistories = this.infovisit.clientVisitHistories;
         loading.dismiss();
       }
-     }, error => {
+    }).catch(async err => {
+      console.log(err);
       loading.dismiss();
-      console.log(error);
-    });
-  }
+  });
+}
   async view_details(data) {
     this.dataservice.setToken(this.token);
     this.dataservice.setclientHistory(this.clientHistory);
@@ -80,5 +78,22 @@ export class DashboardPage implements OnInit {
   }
   close_menu(){
     this.menu.close();
+  }
+  moncompte(){
+    this.dataservice.setToken(this.token);
+    this.dataservice.setclientHistory(this.clientHistory);
+    this.dataservice.setinfoClient(this.infoClient);
+    this.dataservice.setinfoResto(this.infoResto);
+    this.route.navigate(['/menu']);
+  }
+  mesresto(){
+    this.dataservice.setToken(this.token);
+    this.dataservice.setclientHistory(this.clientHistory);
+    this.dataservice.setinfoClient(this.infoClient);
+    this.dataservice.setinfoResto(this.infoResto);
+    this.route.navigate(['/choiceresto']);
+  }
+  logout(){
+    this.route.navigateByUrl('/home', { skipLocationChange: true });
   }
 }

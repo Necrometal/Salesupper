@@ -1,8 +1,9 @@
-import { Component, OnInit,Input } from '@angular/core';
-import { ActionSheetController,NavController,MenuController,LoadingController } from '@ionic/angular';
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import {MenuController,LoadingController } from '@ionic/angular';
 import { Router,ActivatedRoute} from '@angular/router';
 import {DataService} from '../service/data.service';
+import { HTTP } from '@ionic-native/http/ngx';
+
 @Component({
   selector: 'app-detailfacture',
   templateUrl: './detailfacture.page.html',
@@ -18,14 +19,20 @@ export class DetailfacturePage implements OnInit {
   visithistories:any;
   id_histo:any;
   detail_to_show:any;
-  constructor(public actionSheetController: ActionSheetController,public http: HttpClient,private route :Router,public dataservice:DataService,private getid:ActivatedRoute,public menu:MenuController,public load : LoadingController) { 
+  data:any;
+  clientHistory:any;
+  headers: {
+    'Content-Type': 'application/json'
+  }
+  constructor(public http: HTTP,private route :Router,public dataservice:DataService,private getid:ActivatedRoute,public menu:MenuController,public load : LoadingController) { 
     this.token=this.dataservice.getToken();
     this.infoClient=this.dataservice.getinfoClient();
     this.infoResto=this.dataservice.getinfoResto();
-    // this.dataservice.setToken(this.token);
-    // this.dataservice.setclientHistory(this.clientHistory);
-    // this.dataservice.setinfoClient(this.infoClient);
-    // this.dataservice.setinfoResto(this.infoResto);
+    this.clientHistory=this.dataservice.getclientHistory();
+    this.dataservice.setToken(this.token);
+    this.dataservice.setclientHistory(this.clientHistory);
+    this.dataservice.setinfoClient(this.infoClient);
+    this.dataservice.setinfoResto(this.infoResto);
    this.id_histo = this.getid.snapshot.paramMap.get('id');
    console.log("dfdf")
    console.log(this.id_histo);
@@ -38,33 +45,46 @@ export class DetailfacturePage implements OnInit {
       duration: 5000
     });
     await loading.present();
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer '+this.token,
-      })
-    }
     let tosend = {
       id_histo:this.id_histo
     }
     let postData = tosend;
-    this.http.post("http://mobile.api.salesupper.com/api/get_history_details", postData,httpOptions)
-    .subscribe(data => {
-      if(data){
+    this.http.post("http://mobile.api.salesupper.com/api/get_history_details", postData,this.headers)
+    .then(datas => {
+      if(datas){
+        this.data =datas;
+        this.data = JSON.parse(this.data.data);
         loading.dismiss();
-        this.detail_to_show =data.historical;
-        console.log(data);
+        this.detail_to_show =this.data.historical;
       }
-     }, error => {
+    }).catch(async err => {
+      console.log(err);
       loading.dismiss();
-      console.log(error);
     });
   }
+
   openFirst() {
     this.menu.enable(true, 'firstdetfact');
     this.menu.open('firstdetfact');
   }
   close_menu(){
     this.menu.close();
+  }
+  moncompte(){
+    this.dataservice.setToken(this.token);
+    this.dataservice.setclientHistory(this.clientHistory);
+    this.dataservice.setinfoClient(this.infoClient);
+    this.dataservice.setinfoResto(this.infoResto);
+    this.route.navigate(['/menu']);
+  }
+  mesresto(){
+    this.dataservice.setToken(this.token);
+    this.dataservice.setclientHistory(this.clientHistory);
+    this.dataservice.setinfoClient(this.infoClient);
+    this.dataservice.setinfoResto(this.infoResto);
+    this.route.navigate(['/choiceresto']);
+  }
+  logout(){
+    this.route.navigateByUrl('/home', { skipLocationChange: true });
   }
 }
