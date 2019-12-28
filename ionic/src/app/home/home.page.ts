@@ -10,6 +10,7 @@ import { from } from 'rxjs';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage { 
+    a : any;
     formtype = {
         login:'',
         password:"",
