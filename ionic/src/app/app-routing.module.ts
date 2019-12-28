@@ -23,6 +23,15 @@ const routes: Routes = [
     path: 'detailfacture/:id',
     loadChildren: () => import('./detailfacture/detailfacture.module').then( m => m.DetailfacturePageModule)
   },
+  {
+    path: 'paiement/:id',
+    loadChildren: () => import('./paiement/paiement.module').then( m => m.PaiementPageModule)
+  },
+  {
+    path: 'salary/:id',
+    loadChildren: () => import('./salary/salary.module').then( m => m.SalaryPageModule)
+  },
+
 ];
 
 @NgModule({

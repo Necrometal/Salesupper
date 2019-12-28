@@ -12,6 +12,12 @@ Homestead.json
 Homestead.yaml
 .env
 
+/ionic/*~
+/ionic/*.sw[mnpcod]
+/ionic/.tmp
+/ionic/*.tmp
+/ionic/*.tmp.*
+/ionic/*.sublime-project
 /ionic/*.sublime-workspace
 /ionic/.DS_Store
 /ionic/Thumbs.db

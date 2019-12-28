@@ -25,31 +25,34 @@
     </ion-content>
   </ion-menu>
   <ion-router-outlet main></ion-router-outlet>
+  <div style="text-align: center;margin-top: 10px;">
+  <h3>Mon compte</h3>
+  </div>
   <div style="margin-top: 10px;">
     <ion-input placeholder ="Nom du compte *" style="border-bottom: solid 1px;" type="text" value="{{infoClient.name}}"></ion-input>
   </div>
   <div style="margin-top: 10px;">
-    <ion-input placeholder ="Numéro" style="border-bottom: solid 1px;" type="text" value="{{infoClient.login}}"></ion-input>
+    <ion-input placeholder ="Login du compte" style="border-bottom: solid 1px;" type="text" value="{{infoClient.login}}"></ion-input>
   </div>
-  <div style="margin-top: 10px;">
+  <!-- <div style="margin-top: 10px;">
     <ion-input placeholder ="Démarcheur" style="border-bottom: solid 1px;" type="text" value=""></ion-input>
-  </div>
+  </div> -->
 
   <div style="margin-top: 30px;font-weight: bold;">Changer mon mots de passe</div>
 
   <div style="margin-top: 10px;">
-    <div style="font-size: 18px;">Ancien mots de passe</div>
-    <ion-input placeholder ="Nom du compte *" style="border-bottom: solid 1px;" type="text" value=""></ion-input>
+    <div style="font-size: 18px;">Ancien mots de passe *</div>
+    <ion-input [(ngModel)] ="formtype.actual_pass" placeholder ="mots de passe actuel" style="border-bottom: solid 1px;" type="password" value=""></ion-input>
   </div>
   <div style="margin-top: 10px;">
-    <div style="font-size: 18px;">Nouveau mots de passe</div>
-    <ion-input placeholder ="Numéro" style="border-bottom: solid 1px;" type="text" value=""></ion-input>
+    <div style="font-size: 18px;">Nouveau mots de passe*</div>
+    <ion-input [(ngModel)] ="formtype.new_pass" placeholder ="Nouveau mots de passe" style="border-bottom: solid 1px;" type="password" value=""></ion-input>
   </div>
   <div style="margin-top: 10px;">
-    <div style="font-size: 18px;">Confirmer mots de passe</div>
-    <ion-input placeholder ="Démarcheur" style="border-bottom: solid 1px;" type="text" value=""></ion-input>
+    <div style="font-size: 18px;">Confirmer mots de passe*</div>
+    <ion-input [(ngModel)] ="formtype.conf_new_pass" placeholder ="Confirmer le nouveau mots de passe" style="border-bottom: solid 1px;" type="password" value=""></ion-input>
   </div>
   <div style="margin-top: 10px;">
-    <button style="float: right; background-color:#32396b;height: 40px;color: white;font-size: 20px;" >Confirmer</button>
+    <button (click)="change_password()" style="position: absolute;right: 20px; background-color:#32396b;height: 40px;color: white;font-size: 20px;" >Confirmer</button>
   </div>
 </ion-content>

@@ -1,0 +1,58 @@
+<ion-header color="warning">
+  <ion-toolbar color="warning">
+    <ion-title color="warning">
+      <div style="display: flex;">
+      <ion-button color="warning" style="color: white;" (click)="openFirst()"> <ion-icon style="height:20px" ios="ios-menu" md="md-menu"></ion-icon></ion-button>
+      <img src="../../assets/img/logo8PAGE.png">
+    </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-menu color="warning" style="position: fixed;" side="start" menuId="firstdash">
+	    <ion-header color="warning">
+	      <ion-toolbar color="warning">
+	        <ion-title style="display: flex;"><span style="position: absolute;bottom: -1px;"> Menu </span><ion-button color="warning" style="position: absolute;bottom: -13px;right: 10px;height: 30px;color: white;" (click)="close_menu()"><ion-icon style="height: 20px;" ios="ios-close-circle" md="md-close-circle"></ion-icon></ion-button></ion-title>
+	      </ion-toolbar>
+	    </ion-header>
+	    <ion-content color="warning">
+	      <ion-list no-padding color="warning">
+	        <ion-item (click)="moncompte()" style="font-size: 16px;" color="warning">Mon compte</ion-item>
+	        <ion-item (click)="mesresto()" style="font-size: 16px;" color="warning">Mes Restaurant</ion-item>
+	        <ion-item (click)="logout()" style="font-size: 16px;" color="warning">Se déconnecter</ion-item>
+	      </ion-list>
+	    </ion-content>
+	</ion-menu>
+  	<ion-router-outlet main></ion-router-outlet>
+
+  	<ion-grid style="background-color: white;">
+  		<ion-row>
+	        <ion-col size="4">
+	         	<span style="font-size: 18px;font-weight: bold;">Somme</span>
+	        </ion-col>
+	        <ion-col style="font-size: 18px;font-weight: bold;"  size="4">
+	          	<span>Date</span>      
+	        </ion-col>
+	        <ion-col size="4">
+	        	 
+	        </ion-col>
+	    </ion-row>
+	</ion-grid>
+	<ion-grid *ngFor="let details of paiement"  style="background-color: white;">
+	     <ion-row>
+	        <ion-col size="4">
+	         	<span style="">{{details.somme}} MGA</span>
+	        </ion-col>
+	        <ion-col style="" size="4">
+	          	<span>{{details.created_at}}</span>      
+	        </ion-col>
+	        <ion-col size="4" *ngIf="details.validation == 1">
+	          	<span> Réglé</span>
+	        </ion-col>
+	        <ion-col size="4" *ngIf="details.validation == 0">
+	          	<span (click)="paiement_response('yes', details.id)" style="color: green"><ion-icon name="checkmark"></ion-icon></span><span (click)="paiement_response('no', details.id)" style="color: red"> <ion-icon name="close"></ion-icon></span>
+	        </ion-col>
+	     </ion-row>
+    </ion-grid>
+</ion-content>

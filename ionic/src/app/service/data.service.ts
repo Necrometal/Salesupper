@@ -8,6 +8,9 @@ export class DataService {
   infoClient:any;
   infoResto:any;
   clientHistory:any;
+  demHistory: any;
+  demPaiement: any;
+
   constructor() { }
 
  setToken(data) {
@@ -40,6 +43,22 @@ export class DataService {
   }
   getclientHistory(){
     return this.clientHistory;
+  }
+
+  setdemHistory(data){
+    this.demHistory = data;
+  }
+
+  getdemHistory(){
+    return this.demHistory;
+  }
+
+  setdemPaiement(data){
+    this.demPaiement = data;
+  }
+
+  getdemPaiement(){
+    return this.demPaiement;
   }
 
 }
